@@ -40,17 +40,17 @@ Using the translation to provide different default values for different language
 * English: 'mdy'
 * German: 'dmy'
 
-#### SPLITDATE_PLACEHOLDER_DAY
+#### SPLITDATE_PLACEHOLDER_DAY (String):
 A string defining the placeholder of the day field.
 
 Default: _('DD')
 
-#### SPLITDATE_PLACEHOLDER_MONTH
+#### SPLITDATE_PLACEHOLDER_MONTH (String):
 A string defining the placeholder of the month field.
 
 Default: _('MM')
 
-#### SPLITDATE_PLACEHOLDER_YEAR
+#### SPLITDATE_PLACEHOLDER_YEAR (String):
 A string defining the placeholder of the year field.
 
 Default: _('YYYY')
@@ -59,14 +59,14 @@ Per-Instance Configuration
 --------------------------
 The global configuration can be overwritten on a per-instance basis using instantiation attributes:
 
-#### field_ordering
+#### field_ordering (String):
 Local overwrite for SPLITDATE_ORDER. Possible values, see above.
 
-#### placeholder_day
+#### placeholder_day (String):
 Local overwrite for SPLITDATE_PLACEHOLDER_DAY. Possible values, see above.
 
-#### placeholder_month
+#### placeholder_month (String):
 Local overwrite for SPLITDATE_PLACEHOLDER_MONTH. Possible values, see above.
 
-#### placeholder_year
+#### placeholder_year (String):
 Local overwrite for SPLITDATE_PLACEHOLDER_YEAR. Possible values, see above.
