@@ -3,7 +3,7 @@ django-splitdate
 =====
 
 This app provides a form widget that uses three text inputs to enter the day, month and year of a date for a standard
-DateField
+DateField. The field is based on Django's forms.SplitDateTimeWidget.
 
 Quick start
 -----------
@@ -24,31 +24,21 @@ Quick start
     date = forms.DateField(widget=SplitDateWidget())
     ```
 
-Configuration
--------------
+Global Configuration
+--------------------
 
-#### SPLITDATE_ORDER:
+The SplitDateWidget can be configured globally in your settings.py file with the following options
+
+#### SPLITDATE_ORDER (String):
 Defines the ordering of the day, month and year fields.
 
-One of the predefined values:
-- django-splitdate.SPLITDATE_ORDER_DMY (Default)
+A three character string, that contains the characters 'd'(day), 'm'(month), 'y'(year) in the desired order.
 
-    Day/Month/Year
-- django-splitdate.SPLITDATE_ORDER_DYM
+Default: _('mdy')
 
-    Day/Year/Month
-- django-splitdate.SPLITDATE_ORDER_MDY
-
-    Month/Day/Year
-- django-splitdate.SPLITDATE_ORDER_MYD
-
-    Month/Year/Day
-- django-splitdate.SPLITDATE_ORDER_YDM
-
-    Year/Day/Month
-- django-splitdate.SPLITDATE_ORDER_YMD
-
-    Year/Month/Day
+Using the translation to provide different default values for different languages:
+* English: 'mdy'
+* German: 'dmy'
 
 #### SPLITDATE_PLACEHOLDER_DAY
 A string defining the placeholder of the day field.
@@ -64,3 +54,19 @@ Default: _('MM')
 A string defining the placeholder of the year field.
 
 Default: _('YYYY')
+
+Per-Instance Configuration
+--------------------------
+The global configuration can be overwritten on a per-instance basis using instantiation attributes:
+
+#### field_ordering
+Local overwrite for SPLITDATE_ORDER. Possible values, see above.
+
+#### placeholder_day
+Local overwrite for SPLITDATE_PLACEHOLDER_DAY. Possible values, see above.
+
+#### placeholder_month
+Local overwrite for SPLITDATE_PLACEHOLDER_MONTH. Possible values, see above.
+
+#### placeholder_year
+Local overwrite for SPLITDATE_PLACEHOLDER_YEAR. Possible values, see above.

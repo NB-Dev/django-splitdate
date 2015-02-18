@@ -21,7 +21,6 @@ class classproperty(object):
 
 class Settings(object):
     _SPLITDATE_ORDER = None
-    _SPLITDATE_FORMAT = None
     _SPLITDATE_PLACEHOLDER_DAY = None
     _SPLITDATE_PLACEHOLDER_MONTH = None
     _SPLITDATE_PLACEHOLDER_YEAR = None
@@ -30,15 +29,8 @@ class Settings(object):
     def SPLITDATE_ORDER(cls):           # property
         if cls._SPLITDATE_ORDER is None:
             from django.conf import settings
-            cls._SPLITDATE_ORDER = getattr(settings, 'SPLITDATE_ORDER', SPLITDATE_ORDER_DMY)
+            cls._SPLITDATE_ORDER = getattr(settings, 'SPLITDATE_ORDER', ugettext_lazy('mdy')).lower()
         return cls._SPLITDATE_ORDER
-
-    @classproperty
-    def SPLITDATE_FORMAT(cls):           # property
-        if cls._SPLITDATE_FORMAT is None:
-            order = cls.SPLITDATE_ORDER
-            cls._SPLITDATE_FORMAT = '.'.join(['%%%s' % elm for elm in order])
-        return cls._SPLITDATE_FORMAT
     
     @classproperty
     def SPLITDATE_PLACEHOLDER_DAY(cls):           # property

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-18 14:52+0100\n"
-"PO-Revision-Date: 2015-02-18 14:53+0100\n"
+"POT-Creation-Date: 2015-02-18 16:06+0100\n"
+"PO-Revision-Date: 2015-02-18 16:06+0100\n"
 "Last-Translator: Tim Schneider <tim.schneider@nb-dev.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,26 +18,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.7.4\n"
 
-#: app_settings.py:47
+#: app_settings.py:32
+msgid "mdy"
+msgstr "dmy"
+
+#: app_settings.py:39
 msgid "DD"
 msgstr "TT"
 
-#: app_settings.py:54
+#: app_settings.py:46
 msgid "MM"
 msgstr "MM"
 
-#: app_settings.py:61
+#: app_settings.py:53
 msgid "YYYY"
 msgstr "JJJJ"
 
-#: forms.py:34
+#: forms.py:33
 msgid ""
-"Your SPLITDATE_ORDER setting seems to be invalid. Please user one of the "
-"predefined settings defined in django-splitdate."
+"Your SPLITDATE_ORDER setting or 'field_ordering' attribute is invalid. It "
+"needs to be a string that is excactly 3 characters long and contains the "
+"characters 'd', 'm' and 'y' excactly once."
 msgstr ""
-"Ihre SPLITDATE_ORDER Einstellung ist nicht korrekt. Bitte verwenden Sie "
-"eine der vorgegebenen Einstellungen die in django-splitdate definiert "
-"ist."
+"Ihre SPLITDATE_ORDER-Einstellung oder das 'field_ordering' Attribut ist "
+"ungültig. Sie muss ein String sein der genau 3 Zeichen lang ist und die "
+"Zeichen 'd', 'm' und 'y' jeweils genau einmal enthalten."
+
+#~ msgid ""
+#~ "Your SPLITDATE_ORDER setting seems to be invalid. Please user one of the "
+#~ "predefined settings defined in django-splitdate."
+#~ msgstr ""
+#~ "Ihre SPLITDATE_ORDER Einstellung ist nicht korrekt. Bitte verwenden Sie "
+#~ "eine der vorgegebenen Einstellungen die in django-splitdate definiert ist."
 
 #~ msgid "Your SPLITDATE_ORDER setting seems to be invalid."
 #~ msgstr "Die SPILTDATE_ORDER-Einstellung scheint nicht korrekt zu sein."
