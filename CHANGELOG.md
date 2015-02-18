@@ -1,3 +1,7 @@
+v0.1.2 (2015-02-18)
+----
+* Adding tests and runtest.py
+
 v0.1.1 (2015-02-18)
 ----
 * Removing .po files from package

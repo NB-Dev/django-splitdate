@@ -26,14 +26,14 @@ class SplitDateWidget(MultiWidget):
         placeholder_d = kwargs.pop('placeholder_day', Settings.SPLITDATE_PLACEHOLDER_DAY)
         placeholder_m = kwargs.pop('placeholder_month', Settings.SPLITDATE_PLACEHOLDER_MONTH)
         placeholder_y = kwargs.pop('placeholder_year', Settings.SPLITDATE_PLACEHOLDER_YEAR)
-        ordering = unicode(kwargs.pop('field_ordering', Settings.SPLITDATE_ORDER)).lower()
+        self.ordering = unicode(kwargs.pop('field_ordering', Settings.SPLITDATE_ORDER)).lower()
         placeholder = []
         format = []
-        if len(ordering) != 3 or 'd' not in ordering or 'm' not in ordering or 'y' not in ordering:
+        if len(self.ordering) != 3 or 'd' not in self.ordering or 'm' not in self.ordering or 'y' not in self.ordering:
             raise ValueError(ugettext('Your SPLITDATE_ORDER setting or \'field_ordering\' attribute is '
                                       'invalid. It needs to be a string that is excactly 3 characters long and contains'
                                       ' the characters \'d\', \'m\' and \'y\' excactly once.'))
-        for elm in ordering:
+        for elm in self.ordering:
             if elm == 'd':
                 placeholder.append(placeholder_d)
                 format.append('%d')
@@ -52,7 +52,15 @@ class SplitDateWidget(MultiWidget):
 
     def decompress(self, value):
         if value:
-            return [value.day, value.month, value.year]
+            ret = []
+            for order in self.ordering:
+                if order == 'd':
+                    ret.append(value.day)
+                elif order == 'm':
+                    ret.append(value.month)
+                elif order == 'y':
+                    ret.append(value.year)
+            return ret
         return [None, None]
 
     def value_from_datadict(self, data, files, name):

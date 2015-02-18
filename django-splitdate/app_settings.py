@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from . import SPLITDATE_ORDER_DMY
 from django.utils.translation import ugettext_lazy
 
 __author__ = 'Tim Schneider <tim.schneider@northbridge-development.de>'

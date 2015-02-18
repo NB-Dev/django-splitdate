@@ -70,3 +70,8 @@ Local overwrite for SPLITDATE_PLACEHOLDER_MONTH. Possible values, see above.
 
 #### placeholder_year (String):
 Local overwrite for SPLITDATE_PLACEHOLDER_YEAR. Possible values, see above.
+
+Running the tests
+----
+The included tests can be run standalone by running the `tests/runtests.py` script. The only requirement for this is
+Django >= 1.7
