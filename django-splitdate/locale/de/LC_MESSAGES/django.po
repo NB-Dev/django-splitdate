@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-18 14:52+0100\n"
+"PO-Revision-Date: 2015-02-18 14:53+0100\n"
+"Last-Translator: Tim Schneider <tim.schneider@nb-dev.de>\n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.7.4\n"
+
+#: app_settings.py:47
+msgid "DD"
+msgstr "TT"
+
+#: app_settings.py:54
+msgid "MM"
+msgstr "MM"
+
+#: app_settings.py:61
+msgid "YYYY"
+msgstr "JJJJ"
+
+#: forms.py:34
+msgid ""
+"Your SPLITDATE_ORDER setting seems to be invalid. Please user one of the "
+"predefined settings defined in django-splitdate."
+msgstr ""
+"Ihre SPLITDATE_ORDER Einstellung ist nicht korrekt. Bitte verwenden Sie "
+"eine der vorgegebenen Einstellungen die in django-splitdate definiert "
+"ist."
+
+#~ msgid "Your SPLITDATE_ORDER setting seems to be invalid."
+#~ msgstr "Die SPILTDATE_ORDER-Einstellung scheint nicht korrekt zu sein."
