@@ -17,6 +17,5 @@ install:
 # # command to run tests, e.g. python setup.py test
 script:
   - python setup.py develop && python django-splitdate/tests/runtests.py
-
 after_success:
   - coveralls
