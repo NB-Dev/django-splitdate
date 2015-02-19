@@ -16,7 +16,7 @@ before_script:
   - cd django-splitdate
 # # command to run tests, e.g. python setup.py test
 script:
-  - python django-splitdate/tests/runtests.py
+  - python tests/runtests.py
 
 after_sucess:
   coveralls
