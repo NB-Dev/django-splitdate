@@ -1,3 +1,4 @@
+[![PyPI version](https://badge.fury.io/py/django-splitdate.png)](http://badge.fury.io/py/django-splitdate) [![Build](https://api.travis-ci.org/NB-Dev/django-splitdate.png)](http://travis-ci.org/NB-Dev/django-splitdate.png) [![Coverage Status](https://coveralls.io/repos/NB-Dev/django-splitdate/badge.svg?branch=master)](https://coveralls.io/r/NB-Dev/django-splitdate?branch=master)
 =====
 django-splitdate
 =====
