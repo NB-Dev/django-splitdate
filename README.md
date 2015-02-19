@@ -10,7 +10,7 @@ Quick start
 -----------
 
 1. Install django-splitdate:
-    * From the pip repository: ```pip install django-splitdate```
+    * From the pip repository: ```pip install django_splitdate```
     * or directly from github: ```pip install git+git://github.com/NB-Dev/django-splitdate.git``
 
 2. (optional) Customize the Settings (see below)
@@ -18,6 +18,7 @@ Quick start
 3. Define the widget for your form's date field:
 
     ```
+    from django_splitdate.forms import SplitDateWidget
     date = forms.DateField(widget=SplitDateWidget())
     ```
 
@@ -70,5 +71,5 @@ Local overwrite for SPLITDATE_PLACEHOLDER_YEAR. Possible values, see above.
 
 Running the tests
 ----
-The included tests can be run standalone by running the `tests/runtests.py` script. The only requirement for this is
-Django >= 1.7
+The included tests can be run standalone by running the ```tests/runtests.py``` script. The only requirement for this is
+Django >= 1.7. If you also want to run coverage, you need to install it before running the tests

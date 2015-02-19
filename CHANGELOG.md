@@ -1,3 +1,7 @@
+v0.1.4 (2015-02-19)
+----
+* Renaming app to django_splitdate as the minus is not allowed
+
 v0.1.3 (2015-02-19)
 ----
 * Adding coverage to runtest.py if it is available

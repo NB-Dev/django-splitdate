@@ -17,6 +17,6 @@ install:
 # # command to run tests, e.g. python setup.py test
 script:
   - python setup.py develop
-  - coverage run --rcfile='django-splitdate/tests/coverage.conf' --source='./django-splitdate/' django-splitdate/tests/travis_ci.py
+  - coverage run --rcfile='django_splitdate/tests/coverage.conf' --source='./django_splitdate/' django_splitdate/tests/travis_ci.py
 after_success:
   - coveralls

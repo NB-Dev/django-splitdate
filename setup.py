@@ -22,8 +22,8 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-splitdate',
-    version='0.1.3',
-    packages=['django-splitdate'],
+    version='0.1.4',
+    packages=['django_splitdate'],
     include_package_data=True,
     license='MIT License',
     description='A widget for django form date fields that displays three inputs (day, month, year).',
