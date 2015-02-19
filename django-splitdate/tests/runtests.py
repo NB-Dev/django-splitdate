@@ -15,14 +15,27 @@ logger = logging.getLogger(__name__)
 import glob
 import os
 import sys
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+sys.path.append(os.path.abspath(os.path.join(BASE_DIR, '')))
+print BASE_DIR
+try:
+    import coverage # Import coverage if available
+    cov = coverage.coverage(
+        cover_pylib=False,
+        config_file=os.path.join(os.path.dirname(__file__), 'coverage.conf'),
+        include='%s/*' % BASE_DIR,
+    )
+    cov.start()
+    print 'Using coverage'
+except ImportError:
+    cov = None
+    print 'Coverage not available. To evaluate the coverage, please install coverage.'
 
 import django
 from django.conf import settings
 from django.core.management import execute_from_command_line
 
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
-sys.path.append(os.path.abspath(os.path.join(BASE_DIR, '')))
 
 # Unfortunately, apps can not be installed via ``modify_settings``
 # decorator, because it would miss the database setup.
@@ -80,3 +93,10 @@ args.append(test_cases)
 args.extend(sys.argv[offset:])
 
 execute_from_command_line(args)
+
+if cov is not None:
+    print 'Evaluating Coverage'
+    cov.stop()
+    cov.save()
+    print 'Generating HTML Report'
+    cov.html_report()

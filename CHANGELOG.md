@@ -1,3 +1,7 @@
+v0.1.3 (2015-02-19)
+----
+* Adding coverage to runtest.py if it is available
+
 v0.1.2 (2015-02-18)
 ----
 * Adding tests and runtest.py
