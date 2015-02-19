@@ -17,7 +17,7 @@ import os
 import sys
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(os.path.abspath(os.path.join(BASE_DIR, '')))
-print BASE_DIR
+
 try:
     import coverage # Import coverage if available
     cov = coverage.coverage(
