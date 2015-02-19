@@ -26,10 +26,10 @@ try:
         include='%s/*' % BASE_DIR,
     )
     cov.start()
-    print 'Using coverage'
+    sys.stdout.write('Using coverage')
 except ImportError:
     cov = None
-    print 'Coverage not available. To evaluate the coverage, please install coverage.'
+    sys.stdout.write('Coverage not available. To evaluate the coverage, please install coverage.')
 
 import django
 from django.conf import settings
@@ -95,8 +95,8 @@ args.extend(sys.argv[offset:])
 execute_from_command_line(args)
 
 if cov is not None:
-    print 'Evaluating Coverage'
+    sys.stdout.write('Evaluating Coverage')
     cov.stop()
     cov.save()
-    print 'Generating HTML Report'
+    sys.stdout.write('Generating HTML Report')
     cov.html_report()
