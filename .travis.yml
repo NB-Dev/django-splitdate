@@ -16,6 +16,8 @@ install:
   - pip install coveralls
 # # command to run tests, e.g. python setup.py test
 script:
-  - python setup.py develop && python django-splitdate/tests/runtests.py
+  - python setup.py develop
+  - python django-splitdate/tests/travis_ci.py
+  - coverage run --rcfile='coverage.conf' --source='.' django-splitdate/tests/travis_ci.py
 after_success:
   - coveralls
