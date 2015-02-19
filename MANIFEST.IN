@@ -1,4 +1,6 @@
 include LICENSE.md
 include README.md
-INCLUDE CHANGELOG.MD
+include CHANGELOG.MD
 recursive-include django-splitdate/locale *.mo
+exclude django-splitdate/tests/travis_ci.py
+exclude .travis.yml

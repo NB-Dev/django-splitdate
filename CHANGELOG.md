@@ -1,6 +1,7 @@
 v0.1.3 (2015-02-19)
 ----
 * Adding coverage to runtest.py if it is available
+* Updating README.md
 
 v0.1.2 (2015-02-18)
 ----

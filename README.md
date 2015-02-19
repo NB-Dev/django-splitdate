@@ -9,15 +9,11 @@ DateField. The field is based on Django's forms.SplitDateTimeWidget.
 Quick start
 -----------
 
-1. Add "django-splitdate" to your INSTALLED_APPS setting like this:
+1. Install django-splitdate:
+    * From the pip repository: ```pip install django-splitdate```
+    * or directly from github: ```pip install git+git://github.com/NB-Dev/django-splitdate.git``
 
-    ```
-    INSTALLED_APPS = (
-        ...
-        'django-splitdate',
-    )
-    ```
-2. (optional) Customize the Settings
+2. (optional) Customize the Settings (see below)
 
 3. Define the widget for your form's date field:
 
