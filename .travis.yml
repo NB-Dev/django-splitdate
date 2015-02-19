@@ -12,6 +12,8 @@ install:
   - pip install .
   - pip install django==$DJANGO_VERSION
   - pip install coveralls
+before_script:
+  - cd django-splitdate
 # # command to run tests, e.g. python setup.py test
 script:
   - python django-splitdate/tests/runtests.py
