@@ -28,7 +28,7 @@ class Settings(object):
     def SPLITDATE_ORDER(cls):           # property
         if cls._SPLITDATE_ORDER is None:
             from django.conf import settings
-            cls._SPLITDATE_ORDER = getattr(settings, 'SPLITDATE_ORDER', ugettext_lazy('mdy')).lower()
+            cls._SPLITDATE_ORDER = getattr(settings, 'SPLITDATE_ORDER', ugettext_lazy('mdy'))
         return cls._SPLITDATE_ORDER
     
     @classproperty

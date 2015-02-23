@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 import logging
-import datetime
+from datetime import datetime
 from django.forms import MultiWidget
 from django import forms
+from django.utils import formats
+from django.utils.dateparse import parse_date
+from django.utils.encoding import force_str
+from django.utils.formats import get_format
 from django.utils.translation import ugettext
 from app_settings import Settings
 
@@ -15,56 +19,84 @@ __status__ = "Release"
 
 logger = logging.getLogger(__name__)
 
+class _LazyPlaceholder(object):
+        def __init__(self, pos, ordering, placeholder):
+            self.pos = pos
+            self.ordering = ordering
+            self.placeholder = placeholder
+        def __unicode__(self):
+            ordering = unicode(self.ordering).lower()
+            if len(ordering) != 3 or 'd' not in ordering or 'm' not in ordering or 'y' not in ordering:
+                raise ValueError(ugettext('Your SPLITDATE_ORDER setting or \'field_ordering\' attribute is '
+                                          'invalid. It needs to be a string that is excactly 3 characters long and contains'
+                                          ' the characters \'d\', \'m\' and \'y\' excactly once. Current value: %s') % ordering)
+            return unicode(self.placeholder[ordering[self.pos]])
 
 class SplitDateWidget(MultiWidget):
+
     """
     A Widget that splits date input into three <input type="text"> boxes.
     """
-    supports_microseconds = False
+    input_formats = formats.get_format_lazy('DATE_INPUT_FORMATS')
 
     def __init__(self, *args, **kwargs):
         placeholder_d = kwargs.pop('placeholder_day', Settings.SPLITDATE_PLACEHOLDER_DAY)
         placeholder_m = kwargs.pop('placeholder_month', Settings.SPLITDATE_PLACEHOLDER_MONTH)
         placeholder_y = kwargs.pop('placeholder_year', Settings.SPLITDATE_PLACEHOLDER_YEAR)
-        self.ordering = unicode(kwargs.pop('field_ordering', Settings.SPLITDATE_ORDER)).lower()
-        placeholder = []
-        format = []
-        if len(self.ordering) != 3 or 'd' not in self.ordering or 'm' not in self.ordering or 'y' not in self.ordering:
-            raise ValueError(ugettext('Your SPLITDATE_ORDER setting or \'field_ordering\' attribute is '
-                                      'invalid. It needs to be a string that is excactly 3 characters long and contains'
-                                      ' the characters \'d\', \'m\' and \'y\' excactly once.'))
-        for elm in self.ordering:
-            if elm == 'd':
-                placeholder.append(placeholder_d)
-                format.append('%d')
-            elif elm == 'm':
-                placeholder.append(placeholder_m)
-                format.append('%m')
-            elif elm == 'y':
-                placeholder.append(placeholder_y)
-                format.append('%Y')
-        self.date_format = '.'.join(format)
-        widgets = (forms.TextInput(attrs={'placeholder': placeholder[0]}),
-                   forms.TextInput(attrs={'placeholder': placeholder[1]}),
-                   forms.TextInput(attrs={'placeholder': placeholder[2]}),
+        self.ordering = kwargs.pop('field_ordering', Settings.SPLITDATE_ORDER)
+
+        placeholder = {
+            'd': placeholder_d,
+            'm': placeholder_m,
+            'y': placeholder_y,
+        }
+        widgets = (forms.TextInput(attrs={'placeholder': _LazyPlaceholder(0, self.ordering, placeholder)}),
+                   forms.TextInput(attrs={'placeholder': _LazyPlaceholder(1, self.ordering, placeholder)}),
+                   forms.TextInput(attrs={'placeholder': _LazyPlaceholder(2, self.ordering, placeholder)}),
         )
         super(SplitDateWidget, self).__init__(widgets, *args, **kwargs)
 
+    def get_ordering(self):
+        ordering = unicode(self.ordering).lower()
+        if len(ordering) != 3 or 'd' not in ordering or 'm' not in ordering or 'y' not in ordering:
+            raise ValueError(ugettext('Your SPLITDATE_ORDER setting or \'field_ordering\' attribute is '
+                                      'invalid. It needs to be a string that is excactly 3 characters long and contains'
+                                      ' the characters \'d\', \'m\' and \'y\' excactly once. Current value: %s') % ordering)
+        return ordering
+
     def decompress(self, value):
+        values = [None, None, None]
         if value:
-            ret = []
-            for order in self.ordering:
-                if order == 'd':
-                    ret.append(value.day)
-                elif order == 'm':
-                    ret.append(value.month)
-                elif order == 'y':
-                    ret.append(value.year)
-            return ret
-        return [None, None]
+            date = None
+            for format in self.input_formats:
+                try:
+                    date = datetime.strptime(force_str(value), format).date()
+                except (ValueError, TypeError):
+                    continue
+            if date:
+                ordering = self.get_ordering()
+                for i in xrange(len(ordering)):
+                    if ordering[i] == 'd':
+                        values[i] = date.day
+                    elif ordering[i] == 'm':
+                        values[i] = date.month
+                    elif ordering[i] == 'y':
+                        values[i] = date.year
+        return values
 
     def value_from_datadict(self, data, files, name):
         vals = super(SplitDateWidget, self).value_from_datadict(data, files, name)
         if all(vals):
-            return datetime.datetime.strptime(".".join(vals), self.date_format).date()
+            time_format = get_format('SHORT_DATE_FORMAT')
+            ordering = self.get_ordering()
+            for i in xrange(len(vals)):
+                if ordering[i] == 'd':
+                    time_format = time_format.replace('d', unicode(vals[i]))
+                elif ordering[i] == 'm':
+                    time_format = time_format.replace('m', unicode(vals[i]))
+                elif ordering[i] == 'y':
+                    time_format = time_format.replace('Y', unicode(vals[i]))
+            return time_format
         return None
+
+

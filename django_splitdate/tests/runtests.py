@@ -16,7 +16,8 @@ import glob
 import os
 import sys
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
-sys.path.append(os.path.abspath(os.path.join(BASE_DIR, '')))
+print BASE_DIR
+sys.path.insert(0, os.path.abspath(BASE_DIR))
 
 try:
     import coverage # Import coverage if available
@@ -26,10 +27,10 @@ try:
         include='%s/*' % BASE_DIR,
     )
     cov.start()
-    sys.stdout.write('Using coverage')
+    sys.stdout.write('Using coverage\n')
 except ImportError:
     cov = None
-    sys.stdout.write('Coverage not available. To evaluate the coverage, please install coverage.')
+    sys.stdout.write('Coverage not available. To evaluate the coverage, please install coverage.\n')
 
 import django
 from django.conf import settings
@@ -40,7 +41,7 @@ from django.core.management import execute_from_command_line
 # Unfortunately, apps can not be installed via ``modify_settings``
 # decorator, because it would miss the database setup.
 INSTALLED_APPS = (
-    'django-splitdate',
+    'django_splitdate',
 )
 
 settings.configure(
@@ -95,8 +96,8 @@ args.extend(sys.argv[offset:])
 execute_from_command_line(args)
 
 if cov is not None:
-    sys.stdout.write('Evaluating Coverage')
+    sys.stdout.write('Evaluating Coverage\n')
     cov.stop()
     cov.save()
-    sys.stdout.write('Generating HTML Report')
+    sys.stdout.write('Generating HTML Report\n')
     cov.html_report()
