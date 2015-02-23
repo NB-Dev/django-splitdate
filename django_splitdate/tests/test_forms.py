@@ -168,7 +168,7 @@ class SplitDateWidgetTestCase(TestCase):
         ret = widget.decompress(None)
         self.assertListEqual(ret, [None, None, None])
 
-        ret = widget.decompress('02/01/2000')
+        ret = widget.decompress('02/01/00')
         self.assertListEqual(ret, [01, 02, 2000])
 
     @override_settings(

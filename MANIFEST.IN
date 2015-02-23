@@ -3,4 +3,5 @@ include README.md
 include CHANGELOG.md
 recursive-include django_splitdate/locale *.mo
 exclude django_splitdate/tests/travis_ci.py
-exclude .travis.yml
+exclude convert_readme.py
+include setup.cfg

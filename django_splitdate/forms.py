@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import datetime
+from datetime import datetime, time, date
 from django.forms import MultiWidget
 from django import forms
 from django.utils import formats
@@ -9,6 +9,7 @@ from django.utils.encoding import force_str
 from django.utils.formats import get_format
 from django.utils.translation import ugettext
 from app_settings import Settings
+from django_splitdate import _strptime
 
 __author__ = 'Tim Schneider <tim.schneider@northbridge-development.de>'
 __copyright__ = "Copyright 2015, Northbridge Development Konrad & Schneider GbR"
@@ -70,18 +71,18 @@ class SplitDateWidget(MultiWidget):
             date = None
             for format in self.input_formats:
                 try:
-                    date = datetime.strptime(force_str(value), format).date()
+                    date = _strptime(force_str(value), format)
                 except (ValueError, TypeError):
                     continue
             if date:
                 ordering = self.get_ordering()
                 for i in xrange(len(ordering)):
                     if ordering[i] == 'd':
-                        values[i] = date.day
+                        values[i] = date[2]
                     elif ordering[i] == 'm':
-                        values[i] = date.month
+                        values[i] = date[1]
                     elif ordering[i] == 'y':
-                        values[i] = date.year
+                        values[i] = date[0]
         return values
 
     def value_from_datadict(self, data, files, name):
@@ -96,6 +97,7 @@ class SplitDateWidget(MultiWidget):
                     time_format = time_format.replace('m', unicode(vals[i]))
                 elif ordering[i] == 'y':
                     time_format = time_format.replace('Y', unicode(vals[i]))
+                    time_format = time_format.replace('y', unicode(vals[i])[:2])
             return time_format
         return None
 
