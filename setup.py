@@ -22,7 +22,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-splitdate',
-    version='0.1.5',
+    version='0.1.6',
     packages=['django_splitdate'],
     include_package_data=True,
     license='MIT License',

@@ -1,3 +1,7 @@
+v0.1.6 (2015-02-23)
+---
+* Version to allow reuploading of version 0.1.5 with better readme
+
 v0.1.5 (2015-02-23)
 ---
 * Including the default SHORT_DATE_FORMAT to be able to use the widget on a standard DateField
