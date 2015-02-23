@@ -14,20 +14,16 @@ logger = logging.getLogger(__name__)
 import os
 from setuptools import setup
 
-with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
-    README = readme.read()
-
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-splitdate',
-    version='0.1.4',
+    version='0.1.5',
     packages=['django_splitdate'],
     include_package_data=True,
     license='MIT License',
     description='A widget for django form date fields that displays three inputs (day, month, year).',
-    long_description=README,
     url='http://github.com/NB-Dev/django-splitdate',
     author='Nothrbridge Development Konrad & Schneider GbR',
     author_email='mail@nb-dev.de',
