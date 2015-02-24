@@ -1,5 +1,6 @@
 include LICENSE.md
 include README.md
+include README.rst
 include CHANGELOG.md
 recursive-include django_splitdate/locale *
 include setup.cfg

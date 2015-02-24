@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import os
 
 __author__ = 'Tim Schneider <tim.schneider@northbridge-development.de>'
 __copyright__ = "Copyright 2015, Northbridge Development Konrad & Schneider GbR"
@@ -20,3 +21,4 @@ doc.markdown = open('README.md').read()
 f = open('README.rst','w+')
 f.write(doc.rst)
 f.close()
+os.system("python setup.py register")

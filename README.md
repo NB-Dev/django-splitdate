@@ -48,34 +48,35 @@ dictionary containing key, value pairs with a locale name as key and the corresp
 depending on the current locale
 
 Default:
-
-```{
-	'en': 'mdy',
-	'de': 'dmy',
-}```
+```
+	dict((
+		('en', 'mdy'),
+		('de', 'dmy')
+	))
+```
 
 
 #### SPLITDATE_PLACEHOLDER_DAY (String):
 A string defining the placeholder of the day field.
 
-Default: _('DD')
+Default: ```_('DD')```
 
 #### SPLITDATE_PLACEHOLDER_MONTH (String):
 A string defining the placeholder of the month field.
 
-Default: _('MM')
+Default: ```_('MM')```
 
 #### SPLITDATE_PLACEHOLDER_YEAR (String):
 A string defining the placeholder of the year field.
 
-Default: _('YYYY')
+Default: ```_('YYYY')```
 
 Widget configuration
 ----
 If you want to customize the widget of the SplitDateField, use the SplitDateWidget.
  
 e.g. add a class:
- ```
+```
 from django_splitdate.forms import SplitDateField, SplitDateWidget
     date = forms.SplitDateField(widget=SplitDateWidget(attrs={'class':'myclass'}))
 ```
