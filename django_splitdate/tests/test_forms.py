@@ -4,7 +4,7 @@ import logging
 from django.test import TestCase, override_settings
 from django.utils import translation
 from django.utils.translation import ugettext_lazy
-from ..forms import SplitDateWidget, get_placeholder
+from ..forms import SplitDateWidget, get_placeholder, _get_ordering, _get_ordering_string_by_language
 from ..app_settings import Settings
 __author__ = 'Tim Schneider <tim.schneider@northbridge-development.de>'
 __copyright__ = "Copyright 2015, Northbridge Development Konrad & Schneider GbR"
@@ -14,6 +14,60 @@ __email__ = "mail@northbridge-development.de"
 __status__ = "Development"
 
 logger = logging.getLogger(__name__)
+
+class GetOrderingTestCase(TestCase):
+
+    def test_get_ordering_ok(self):
+        self.assertEqual('dmy', _get_ordering('dmy'))
+
+    def test_get_ordering_translation(self):
+        translation.activate('de')
+        self.assertEqual('dmy', _get_ordering({'en': 'mdy', 'de': 'dmy'}))
+        translation.activate('en')
+
+    def test_get_ordering_ok_upper(self):
+        self.assertEqual('dmy', _get_ordering('DMY'))
+
+    def test_get_ordering_ordererror_length(self):
+        self.assertRaises(ValueError, _get_ordering, 'dmyy')
+
+    def test_get_ordering_ordererror_day_missing(self):
+        self.assertRaises(ValueError, _get_ordering,'amy')
+
+    def test_get_ordering_ordererror_month_missing(self):
+        self.assertRaises(ValueError, _get_ordering, 'day')
+
+    def test_get_ordering_ordererror_year_missing(self):
+        self.assertRaises(ValueError, _get_ordering, 'dmm')
+
+    def test_get_ordering_two_languages(self):
+        translation.activate('en')
+        self.assertEqual('mdy', _get_ordering({'en': 'mdy', 'de': 'dmy'}))
+        translation.activate('de')
+        self.assertEqual('dmy', _get_ordering({'en': 'mdy', 'de': 'dmy'}))
+        translation.activate('en')
+
+class GetOrderingStringByLanguage(TestCase):
+    def test__get_ordering_string_by_language(self):
+        translation.activate('de_DE')
+        # Test language directly included
+        ret = _get_ordering_string_by_language({'en': 'en', 'de_DE': 'de_DE'})
+        self.assertEqual(ret, 'de_DE')
+
+        # Test only starts with
+        ret = _get_ordering_string_by_language({'en': 'en', 'de': 'de'})
+        self.assertEqual(ret, 'de')
+
+        # Test not included
+        ret = _get_ordering_string_by_language({'en': 'en', })
+        self.assertEqual(ret, 'en')
+
+        # test none at all
+        ret = _get_ordering_string_by_language({})
+        self.assertEqual(ret, 'dmy')
+
+        translation.activate('en')
+
 
 class GetPlaceholderTestCase(TestCase):
     def test_day(self):
@@ -91,112 +145,6 @@ class SplitDateWidgetTestCase(TestCase):
         widget = SplitDateWidget()
         self.assertEqual(unicode(widget.ordering), 'DMY')
 
-    def test_get_ordering_string_by_language(self):
-        widget = SplitDateWidget()
-        translation.activate('de_DE')
-        # Test language directly included
-        ret = widget.get_ordering_string_by_language({'en': 'en', 'de_DE': 'de_DE'})
-        self.assertEqual(ret, 'de_DE')
-
-        # Test only starts with
-        ret = widget.get_ordering_string_by_language({'en': 'en', 'de': 'de'})
-        self.assertEqual(ret, 'de')
-
-        # Test not included
-        ret = widget.get_ordering_string_by_language({'en': 'en', })
-        self.assertEqual(ret, 'en')
-
-        # test none at all
-        ret = widget.get_ordering_string_by_language({})
-        self.assertEqual(ret, 'dmy')
-
-        translation.activate('en')
-
-    @override_settings(
-        SPLITDATE_PLACEHOLDER_DAY='DAY',
-        SPLITDATE_PLACEHOLDER_MONTH='MONTH',
-        SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER='dmy',
-    )
-    def test_get_ordering_ok(self):
-        widget = SplitDateWidget()
-        self.assertEqual('dmy', widget.get_ordering())
-
-    @override_settings(
-        SPLITDATE_PLACEHOLDER_DAY='DAY',
-        SPLITDATE_PLACEHOLDER_MONTH='MONTH',
-        SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER={'en': 'mdy', 'de':'dmy'},
-    )
-    def test_get_ordering_translation(self):
-        widget = SplitDateWidget()
-        translation.activate('de')
-        self.assertEqual('dmy', widget.get_ordering())
-        translation.activate('en')
-
-    @override_settings(
-        SPLITDATE_PLACEHOLDER_DAY='DAY',
-        SPLITDATE_PLACEHOLDER_MONTH='MONTH',
-        SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER='DMY',
-    )
-    def test_get_ordering_ok_upper(self):
-        widget = SplitDateWidget()
-        self.assertEqual('dmy', widget.get_ordering())
-
-    @override_settings(
-        SPLITDATE_PLACEHOLDER_DAY='DAY',
-        SPLITDATE_PLACEHOLDER_MONTH='MONTH',
-        SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER='dmyy',
-    )
-    def test_get_ordering_ordererror_length(self):
-        widget = SplitDateWidget()
-        self.assertRaises(ValueError, widget.get_ordering)
-
-    @override_settings(
-        SPLITDATE_PLACEHOLDER_DAY='DAY',
-        SPLITDATE_PLACEHOLDER_MONTH='MONTH',
-        SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER='mmy',
-    )
-    def test_get_ordering_ordererror_day_missing(self):
-        widget = SplitDateWidget()
-        self.assertRaises(ValueError, widget.get_ordering)
-
-    @override_settings(
-        SPLITDATE_PLACEHOLDER_DAY='DAY',
-        SPLITDATE_PLACEHOLDER_MONTH='MONTH',
-        SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER='ddy',
-    )
-    def test_get_ordering_ordererror_month_missing(self):
-        widget = SplitDateWidget()
-        self.assertRaises(ValueError, widget.get_ordering)
-
-    @override_settings(
-        SPLITDATE_PLACEHOLDER_DAY='DAY',
-        SPLITDATE_PLACEHOLDER_MONTH='MONTH',
-        SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER='dmm',
-    )
-    def test_get_ordering_ordererror_year_missing(self):
-        widget = SplitDateWidget()
-        self.assertRaises(ValueError, widget.get_ordering)
-
-    @override_settings(
-        SPLITDATE_PLACEHOLDER_DAY='DAY',
-        SPLITDATE_PLACEHOLDER_MONTH='MONTH',
-        SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER={'en': 'mdy', 'de': 'dmy'},
-    )
-    def test_get_ordering_two_languages(self):
-        widget = SplitDateWidget()
-        translation.activate('en')
-        self.assertEqual(widget.get_ordering(), 'mdy')
-        translation.activate('de')
-        self.assertEqual(widget.get_ordering(), 'dmy')
-        translation.activate('en')
 
     @override_settings(
         SPLITDATE_PLACEHOLDER_DAY='DAY',

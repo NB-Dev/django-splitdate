@@ -1,3 +1,8 @@
+v0.1.8 (2015-02-24)
+----
+* Refactoring to reduce code replication
+* Bugfix
+
 v0.1.7 (2015-02-24)
 ---
 * Cannot work with standard DateField as the SHORT_DATE_FORMAT might not contain a 4 digit year field, resulting in

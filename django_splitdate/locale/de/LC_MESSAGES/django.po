@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-24 10:38+0100\n"
+"POT-Creation-Date: 2015-02-24 11:10+0100\n"
 "PO-Revision-Date: 2015-02-24 10:39+0100\n"
 "Last-Translator: Tim Schneider <tim.schneider@nb-dev.de>\n"
 "Language-Team: \n"
@@ -30,7 +30,7 @@ msgstr "MM"
 msgid "YYYY"
 msgstr "JJJJ"
 
-#: forms.py:24 forms.py:78
+#: forms.py:26
 #, python-format
 msgid ""
 "Your SPLITDATE_ORDER setting or 'field_ordering' attribute is invalid. It "
@@ -41,7 +41,7 @@ msgstr ""
 "ungültig. Es muss ein String sein der genau 3 Zeichen lang ist und die "
 "Zeichen 'd', 'm' und 'y' jeweils genau einmal enthält. Aktueller Wert: %s"
 
-#: forms.py:90
+#: forms.py:84
 msgid "The Value needs to be in the format DD.MM.YYYY."
 msgstr "Der Wert muss im Format DD.MM.YYYY vorliegen."
 
