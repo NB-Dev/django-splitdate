@@ -188,7 +188,7 @@ class SplitDateWidgetTestCase(TestCase):
         SPLITDATE_PLACEHOLDER_DAY='DAY',
         SPLITDATE_PLACEHOLDER_MONTH='MONTH',
         SPLITDATE_PLACEHOLDER_YEAR='YEAR',
-        SPLITDATE_ORDER=ugettext_lazy('mdy'),
+        SPLITDATE_ORDER={'en': 'mdy', 'de': 'dmy'},
     )
     def test_get_ordering_two_languages(self):
         widget = SplitDateWidget()

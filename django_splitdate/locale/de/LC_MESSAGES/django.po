@@ -45,10 +45,6 @@ msgstr ""
 msgid "The Value needs to be in the format DD.MM.YYYY."
 msgstr "Der Wert muss im Format DD.MM.YYYY vorliegen."
 
-#: tests/test_forms.py:191
-msgid "mdy"
-msgstr "dmy"
-
 #~ msgid ""
 #~ "Your SPLITDATE_ORDER setting seems to be invalid. Please user one of the "
 #~ "predefined settings defined in django-splitdate."
