@@ -13,30 +13,47 @@ Quick start
     * From the pip repository: ```pip install django_splitdate```
     * or directly from github: ```pip install git+git://github.com/NB-Dev/django-splitdate.git``
 
-2. (optional) Customize the Settings (see below)
+2. Add ```django_splitdate``` to your ```INSTALLED_APPS```:
+	```
+	INSTALLED_APPS = (
+		...
+		'django_splitdate',
+	)
+	```
 
-3. Define the widget for your form's date field:
+3. (optional) Customize the Settings (see below)
+
+4. Use the SplitDateField in your Forms:
 
     ```
-    from django_splitdate.forms import SplitDateWidget
-    date = forms.DateField(widget=SplitDateWidget())
+    from django_splitdate.forms import SplitDateField
+    date = forms.SplitDateField()
     ```
+
+
 
 Global Configuration
---------------------
+----
 
-The SplitDateWidget can be configured globally in your settings.py file with the following options
+The SplitDateField can be configured globally in your settings.py file with the following options
 
-#### SPLITDATE_ORDER (String):
+#### SPLITDATE_ORDER (String or Dict):
 Defines the ordering of the day, month and year fields.
 
-A three character string, that contains the characters 'd'(day), 'm'(month), 'y'(year) in the desired order.
+The order of the fields is defined by a three character string, that contains the characters 'd'(day), 'm'(month),
+'y'(year) in the desired order.
 
-Default: _('mdy')
+The setting can either be such a string to be used on each SplitDateField no matter what language is selected, or a
+dictionary containing key, value pairs with a locale name as key and the corresponding order string as value to be used
+depending on the current locale
 
-Using the translation to provide different default values for different languages:
-* English: 'mdy'
-* German: 'dmy'
+Default:
+
+```{
+	'en': 'mdy',
+	'de': 'dmy',
+}```
+
 
 #### SPLITDATE_PLACEHOLDER_DAY (String):
 A string defining the placeholder of the day field.
@@ -53,11 +70,19 @@ A string defining the placeholder of the year field.
 
 Default: _('YYYY')
 
-Per-Instance Configuration
---------------------------
-The global configuration can be overwritten on a per-instance basis using instantiation attributes:
+Widget configuration
+----
+If you want to customize the widget of the SplitDateField, use the SplitDateWidget.
+ 
+e.g. add a class:
+ ```
+from django_splitdate.forms import SplitDateField, SplitDateWidget
+    date = forms.SplitDateField(widget=SplitDateWidget(attrs={'class':'myclass'}))
+```
 
-#### field_ordering (String):
+Additionally the widget takes the following local overwrites of the global configurations at initialization:
+
+#### field_ordering (String or Dict):
 Local overwrite for SPLITDATE_ORDER. Possible values, see above.
 
 #### placeholder_day (String):

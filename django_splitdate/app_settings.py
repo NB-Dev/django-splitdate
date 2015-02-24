@@ -17,6 +17,10 @@ class classproperty(object):
     def __get__(self, instance, owner):
         return self.getter(owner)
 
+DEFAULT_SPLITDATE_ORDER = {
+    'en': 'mdy',
+    'de': 'dmy',
+}
 
 class Settings(object):
     _SPLITDATE_ORDER = None
@@ -28,7 +32,8 @@ class Settings(object):
     def SPLITDATE_ORDER(cls):           # property
         if cls._SPLITDATE_ORDER is None:
             from django.conf import settings
-            cls._SPLITDATE_ORDER = getattr(settings, 'SPLITDATE_ORDER', ugettext_lazy('mdy'))
+            cls._SPLITDATE_ORDER = getattr(settings, 'SPLITDATE_ORDER', DEFAULT_SPLITDATE_ORDER)
+
         return cls._SPLITDATE_ORDER
     
     @classproperty

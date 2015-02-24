@@ -1,7 +1,5 @@
 include LICENSE.md
 include README.md
 include CHANGELOG.md
-recursive-include django_splitdate/locale *.mo
-exclude django_splitdate/tests/travis_ci.py
-exclude convert_readme.py
+recursive-include django_splitdate/locale *
 include setup.cfg

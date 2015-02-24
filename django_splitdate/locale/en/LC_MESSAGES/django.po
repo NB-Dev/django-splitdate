@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-18 16:06+0100\n"
-"PO-Revision-Date: 2015-02-18 16:06+0100\n"
+"POT-Creation-Date: 2015-02-24 10:38+0100\n"
+"PO-Revision-Date: 2015-02-24 10:39+0100\n"
 "Last-Translator: Tim Schneider <tim.schneider@nb-dev.de>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -17,31 +17,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.7.4\n"
 
-#: app_settings.py:32
-msgid "mdy"
-msgstr "mdy"
-
-#: app_settings.py:39
+#: app_settings.py:43
 msgid "DD"
 msgstr "DD"
 
-#: app_settings.py:46
+#: app_settings.py:50
 msgid "MM"
 msgstr "MM"
 
-#: app_settings.py:53
+#: app_settings.py:57
 msgid "YYYY"
 msgstr "YYYY"
 
-#: forms.py:33
+#: forms.py:24 forms.py:78
+#, python-format
 msgid ""
 "Your SPLITDATE_ORDER setting or 'field_ordering' attribute is invalid. It "
 "needs to be a string that is excactly 3 characters long and contains the "
-"characters 'd', 'm' and 'y' excactly once."
+"characters 'd', 'm' and 'y' excactly once. Current value: %s"
 msgstr ""
 "Your SPLITDATE_ORDER setting or 'field_ordering' attribute is invalid. It "
 "needs to be a string that is excactly 3 characters long and contains the "
-"characters 'd', 'm' and 'y' excactly once."
+"characters 'd', 'm' and 'y' excactly once. Current value: %s"
+
+#: forms.py:90
+msgid "The Value needs to be in the format DD.MM.YYYY."
+msgstr "The Value needs to be in the format DD.MM.YYYY."
+
+#: tests/test_forms.py:191
+msgid "mdy"
+msgstr "mdy"
 
 #~ msgid ""
 #~ "Your SPLITDATE_ORDER setting seems to be invalid. Please user one of the "

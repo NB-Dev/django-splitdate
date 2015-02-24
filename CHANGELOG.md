@@ -1,3 +1,9 @@
+v0.1.7 (2015-02-24)
+---
+* Cannot work with standard DateField as the SHORT_DATE_FORMAT might not contain a 4 digit year field, resulting in
+	strange date results. Going back to a SplitDateField
+* Not using translation for different languages anymore. Instead using a dictionary for the mapping.
+
 v0.1.6 (2015-02-23)
 ---
 * Version to allow reuploading of version 0.1.5 with better readme

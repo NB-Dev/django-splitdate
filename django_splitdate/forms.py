@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import datetime, time, date
-from django.forms import MultiWidget
+from datetime import date
+from django.forms import MultiWidget, DateField
 from django import forms
-from django.utils import formats
-from django.utils.dateparse import parse_date
+from django.utils import six
 from django.utils.encoding import force_str
-from django.utils.formats import get_format
-from django.utils.translation import ugettext
+from django.utils.functional import lazy
+from django.utils.translation import ugettext, get_language
 from app_settings import Settings
-from django_splitdate import _strptime
 
 __author__ = 'Tim Schneider <tim.schneider@northbridge-development.de>'
 __copyright__ = "Copyright 2015, Northbridge Development Konrad & Schneider GbR"
@@ -20,25 +18,21 @@ __status__ = "Release"
 
 logger = logging.getLogger(__name__)
 
-class _LazyPlaceholder(object):
-        def __init__(self, pos, ordering, placeholder):
-            self.pos = pos
-            self.ordering = ordering
-            self.placeholder = placeholder
-        def __unicode__(self):
-            ordering = unicode(self.ordering).lower()
-            if len(ordering) != 3 or 'd' not in ordering or 'm' not in ordering or 'y' not in ordering:
-                raise ValueError(ugettext('Your SPLITDATE_ORDER setting or \'field_ordering\' attribute is '
-                                          'invalid. It needs to be a string that is excactly 3 characters long and contains'
-                                          ' the characters \'d\', \'m\' and \'y\' excactly once. Current value: %s') % ordering)
-            return unicode(self.placeholder[ordering[self.pos]])
+def get_placeholder(pos, ordering, placeholder):
+    ordering = force_str(ordering).lower()
+    if len(ordering) != 3 or 'd' not in ordering or 'm' not in ordering or 'y' not in ordering:
+        raise ValueError(ugettext('Your SPLITDATE_ORDER setting or \'field_ordering\' attribute is '
+                                  'invalid. It needs to be a string that is excactly 3 characters long and contains'
+                                  ' the characters \'d\', \'m\' and \'y\' excactly once. Current value: %s') % ordering)
+    return unicode(placeholder[ordering[pos]])
+
+get_placeholder_lazy = lazy(get_placeholder, six.text_type)
 
 class SplitDateWidget(MultiWidget):
 
     """
     A Widget that splits date input into three <input type="text"> boxes.
     """
-    input_formats = formats.get_format_lazy('DATE_INPUT_FORMATS')
 
     def __init__(self, *args, **kwargs):
         placeholder_d = kwargs.pop('placeholder_day', Settings.SPLITDATE_PLACEHOLDER_DAY)
@@ -51,14 +45,35 @@ class SplitDateWidget(MultiWidget):
             'm': placeholder_m,
             'y': placeholder_y,
         }
-        widgets = (forms.TextInput(attrs={'placeholder': _LazyPlaceholder(0, self.ordering, placeholder)}),
-                   forms.TextInput(attrs={'placeholder': _LazyPlaceholder(1, self.ordering, placeholder)}),
-                   forms.TextInput(attrs={'placeholder': _LazyPlaceholder(2, self.ordering, placeholder)}),
+        widgets = (forms.TextInput(attrs={'placeholder': get_placeholder_lazy(0, self.ordering, placeholder)}),
+                   forms.TextInput(attrs={'placeholder': get_placeholder_lazy(1, self.ordering, placeholder)}),
+                   forms.TextInput(attrs={'placeholder': get_placeholder_lazy(2, self.ordering, placeholder)}),
         )
         super(SplitDateWidget, self).__init__(widgets, *args, **kwargs)
 
+    def get_ordering_string_by_language(self, ordering):
+        lang = get_language()
+        # first see if exact language is available in ordering
+        if lang in ordering:
+            return ordering[lang]
+
+        fallback = None
+        # Then see if a the language starts with another defined language
+        for key, value in ordering.iteritems():
+            if lang.startswith(key):
+                return value
+            if not fallback:
+                fallback = value
+
+        # use the first value or 'dmy' as fallback
+        return fallback or 'dmy'
+
+
     def get_ordering(self):
-        ordering = unicode(self.ordering).lower()
+        ordering = self.ordering
+        if isinstance(ordering, dict):
+            ordering = self.get_ordering_string_by_language(ordering)
+        ordering = unicode(ordering).lower()
         if len(ordering) != 3 or 'd' not in ordering or 'm' not in ordering or 'y' not in ordering:
             raise ValueError(ugettext('Your SPLITDATE_ORDER setting or \'field_ordering\' attribute is '
                                       'invalid. It needs to be a string that is excactly 3 characters long and contains'
@@ -66,39 +81,38 @@ class SplitDateWidget(MultiWidget):
         return ordering
 
     def decompress(self, value):
+        if isinstance(value, date):
+            value = value.strftime('%d.%m.%Y')
         values = [None, None, None]
         if value:
-            date = None
-            for format in self.input_formats:
-                try:
-                    date = _strptime(force_str(value), format)
-                except (ValueError, TypeError):
-                    continue
-            if date:
-                ordering = self.get_ordering()
-                for i in xrange(len(ordering)):
-                    if ordering[i] == 'd':
-                        values[i] = date[2]
-                    elif ordering[i] == 'm':
-                        values[i] = date[1]
-                    elif ordering[i] == 'y':
-                        values[i] = date[0]
+            parts = value.split('.')
+            if len(parts) != 3:
+                raise ValueError(ugettext('The Value needs to be in the format DD.MM.YYYY.'))
+            ordering = self.get_ordering()
+            for i in xrange(len(parts)):
+                if ordering[i] == 'd':
+                    values[i] = parts[0]
+                elif ordering[i] == 'm':
+                    values[i] = parts[1]
+                elif ordering[i] == 'y':
+                    values[i] = parts[2]
         return values
 
     def value_from_datadict(self, data, files, name):
         vals = super(SplitDateWidget, self).value_from_datadict(data, files, name)
         if all(vals):
-            time_format = get_format('SHORT_DATE_FORMAT')
+            values = [None, None, None]
             ordering = self.get_ordering()
             for i in xrange(len(vals)):
                 if ordering[i] == 'd':
-                    time_format = time_format.replace('d', unicode(vals[i]))
+                    values[0] = vals[i]
                 elif ordering[i] == 'm':
-                    time_format = time_format.replace('m', unicode(vals[i]))
+                    values[1] = vals[i]
                 elif ordering[i] == 'y':
-                    time_format = time_format.replace('Y', unicode(vals[i]))
-                    time_format = time_format.replace('y', unicode(vals[i])[:2])
-            return time_format
+                    values[2] = vals[i]
+            return '.'.join(values)
         return None
 
-
+class SplitDateField(DateField):
+    widget = SplitDateWidget
+    input_formats = ['%d.%m.%Y',]
