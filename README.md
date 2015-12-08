@@ -99,3 +99,7 @@ Running the tests
 ----
 The included tests can be run standalone by running the ```tests/runtests.py``` script. The only requirement for this is
 Django >= 1.7. If you also want to run coverage, you need to install it before running the tests
+
+
+## Maintainers
+This Project is maintaned by [Northbridge Development Konrad & Schneider GbR](http://www.northbridge-development.de) Softwareentwicklung
